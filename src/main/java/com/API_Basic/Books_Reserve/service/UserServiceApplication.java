@@ -73,9 +73,12 @@ public class UserServiceApplication {
             return user;
         });
     }
-    public void deleteUserByID(int id){
-        getUserByID(id).ifPresent(user -> usersList.remove(user));
-        saveUsers();
+    public Optional<UserData> deleteUserByID(int id){
+        return getUserByID(id).map(user ->{
+            usersList.remove(user);
+            saveUsers();
+            return user;
+        });
     }
 
 

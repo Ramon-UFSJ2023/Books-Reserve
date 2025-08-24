@@ -62,8 +62,26 @@ public class BookServiceApplication {
         saveBooks();
     }
 
-    public boolean reserveBookByName(String name){
-        if()
+    public void reserveBookByName(String name){
+        Optional<BookData> bookReserve = listOfBooks.stream().filter(SearchBookByName -> SearchBookByName.getName().equalsIgnoreCase(name)).findFirst();
+        if(bookReserve.isPresent()){
+            BookData book = bookReserve.get();
+            if(book.isDisponivel()){
+                book.setDisponivel(false);
+                saveBooks();
+            }
+        }
     }
+
+    public void devolutionBookByName(String name){
+        Optional<BookData> bookDevolution = listOfBooks.stream().filter(SearchBookByName -> SearchBookByName.getName().equalsIgnoreCase(name)).findFirst();
+        if(bookDevolution.isPresent()){
+            BookData book = bookDevolution.get();
+            book.setDisponivel(true);
+            saveBooks();
+        }
+    }
+
+
 
 }
