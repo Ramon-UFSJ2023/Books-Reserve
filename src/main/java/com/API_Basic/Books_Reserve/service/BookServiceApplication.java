@@ -62,5 +62,8 @@ public class BookServiceApplication {
         saveBooks();
     }
 
+    public boolean reserveBookByName(String name){
+        if()
+    }
 
 }
