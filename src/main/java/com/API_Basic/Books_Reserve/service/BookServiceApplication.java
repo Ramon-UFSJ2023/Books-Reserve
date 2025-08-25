@@ -48,14 +48,14 @@ public class BookServiceApplication {
     }
 
     public BookData createBook(BookData newBook){
-        newBook.setID(listOfBooks.stream().mapToInt(BookData::getID).max().orElse(0)+1);
+        newBook.setId(listOfBooks.stream().mapToInt(BookData::getId).max().orElse(0)+1);
         listOfBooks.add(newBook);
         saveBooks();
         return newBook;
     }
 
     public Optional<BookData> getBookByID(int id){
-        return listOfBooks.stream().filter(SearchId -> SearchId.getID() == id).findFirst();
+        return listOfBooks.stream().filter(SearchId -> SearchId.getId() == id).findFirst();
     }
     public List<BookData> getAllBooks(){
         return this.listOfBooks;
@@ -96,7 +96,7 @@ public class BookServiceApplication {
 
     public Optional<BookData> updateBookByID(int id, BookData newBook){
         return getBookByID(id).map(bookData -> {
-            newBook.setID(bookData.getID());
+            newBook.setId(bookData.getId());
             BeanUtils.copyProperties(newBook, bookData);
             saveBooks();
             return newBook;

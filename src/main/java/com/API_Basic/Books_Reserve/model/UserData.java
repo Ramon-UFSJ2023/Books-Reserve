@@ -14,6 +14,6 @@ public class UserData {
     private String email;
     private int password;
     private int id;
-    private final boolean ADM;
+    private final boolean adm;
 
 }

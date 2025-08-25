@@ -54,7 +54,7 @@ public class UserServiceApplication {
     }
 
     public UserData createUser(UserData user){
-        user.setID(usersList.stream().mapToInt(UserData ::getID).max().orElse(0)+1);
+        user.setId(usersList.stream().mapToInt(UserData ::getId).max().orElse(0)+1);
         usersList.add(user);
         saveUsers();
         return user;
@@ -63,11 +63,11 @@ public class UserServiceApplication {
         return this.usersList;
     }
     public Optional<UserData> getUserByID(int id){
-        return usersList.stream().filter(searchByID -> searchByID.getID() == id).findFirst();
+        return usersList.stream().filter(searchByID -> searchByID.getId() == id).findFirst();
     }
     public Optional<UserData> uptadeUserByID(int id, UserData newUser){
         return getUserByID(id).map(user ->{
-            newUser.setID(user.getID());
+            newUser.setId(user.getId());
             BeanUtils.copyProperties(newUser, user);
             saveUsers();
             return user;
