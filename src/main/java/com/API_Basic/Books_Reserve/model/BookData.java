@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class BookData {
     private String name;
-    private int ID;
+    private int id;
     private boolean disponivel;
     private String author;
 }

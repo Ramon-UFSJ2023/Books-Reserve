@@ -13,7 +13,7 @@ public class UserData {
     private String name;
     private String email;
     private int password;
-    private int ID;
+    private int id;
     private final boolean ADM;
 
 }
