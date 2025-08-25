@@ -67,7 +67,7 @@ public class UserServiceApplication {
     }
     public Optional<UserData> uptadeUserByID(int id, UserData newUser){
         return getUserByID(id).map(user ->{
-            newUser.setID(id);
+            newUser.setID(user.getID());
             BeanUtils.copyProperties(newUser, user);
             saveUsers();
             return user;

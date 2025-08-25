@@ -3,6 +3,7 @@ import com.API_Basic.Books_Reserve.model.BookData;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -56,30 +57,51 @@ public class BookServiceApplication {
     public Optional<BookData> getBookByID(int id){
         return listOfBooks.stream().filter(SearchId -> SearchId.getID() == id).findFirst();
     }
-
-    public void deleteBookByID(int id){
-        getBookByID(id).ifPresent(bookData -> listOfBooks.remove(bookData));
-        saveBooks();
+    public List<BookData> getAllBooks(){
+        return this.listOfBooks;
     }
 
-    public void reserveBookByName(String name){
-        Optional<BookData> bookReserve = listOfBooks.stream().filter(SearchBookByName -> SearchBookByName.getName().equalsIgnoreCase(name)).findFirst();
-        if(bookReserve.isPresent()){
-            BookData book = bookReserve.get();
-            if(book.isDisponivel()){
-                book.setDisponivel(false);
-                saveBooks();
-            }
-        }
-    }
-
-    public void devolutionBookByName(String name){
-        Optional<BookData> bookDevolution = listOfBooks.stream().filter(SearchBookByName -> SearchBookByName.getName().equalsIgnoreCase(name)).findFirst();
-        if(bookDevolution.isPresent()){
-            BookData book = bookDevolution.get();
-            book.setDisponivel(true);
+    public Optional<BookData> deleteBookByID(int id){
+        return getBookByID(id).map(book -> {
+            listOfBooks.remove(book);
             saveBooks();
-        }
+            return book;
+        });
+    }
+
+    public Optional<BookData> reserveBookByName(String bookRervado){
+        return listOfBooks.stream()
+                .filter(name -> name.getName().equalsIgnoreCase(bookRervado))
+                .findFirst()
+                .map(book ->{
+                    if(book.isDisponivel()){
+                        book.setDisponivel(false);
+                        saveBooks();
+                    }
+                    return book;
+                });
+
+    }
+
+    public Optional<BookData> devolutionBookByName(String name){
+        return listOfBooks.stream()
+                .filter(SearchBookByName -> SearchBookByName.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .map(dBook ->{
+                    dBook.setDisponivel(true);
+                    saveBooks();
+                    return dBook;
+                });
+
+    }
+
+    public Optional<BookData> updateBookByID(int id, BookData newBook){
+        return getBookByID(id).map(bookData -> {
+            newBook.setID(bookData.getID());
+            BeanUtils.copyProperties(newBook, bookData);
+            saveBooks();
+            return newBook;
+        });
     }
 
 
