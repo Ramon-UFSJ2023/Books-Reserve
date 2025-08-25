@@ -71,14 +71,13 @@ public class BookServiceApplication {
 
     public Optional<BookData> reserveBookByName(String bookRervado){
         return listOfBooks.stream()
-                .filter(name -> name.getName().equalsIgnoreCase(bookRervado))
+                .filter(nameBook ->nameBook.getName().equalsIgnoreCase(bookRervado))
+                .filter(BookData::isDisponivel)
                 .findFirst()
-                .map(book ->{
-                    if(book.isDisponivel()){
-                        book.setDisponivel(false);
-                        saveBooks();
-                    }
-                    return book;
+                .map(bookData -> {
+                    bookData.setDisponivel(false);
+                    saveBooks();
+                    return bookData;
                 });
 
     }
